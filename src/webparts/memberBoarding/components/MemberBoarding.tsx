@@ -25,7 +25,7 @@ export interface IMemberOnBoardingState {
   //formData: { [key: string]: any };
   formData: {
     [key: string]: any;
-    AddressSameAsInProfile: any;
+    AddressSameAsInProfile_x00a0_: any;
     AssetSize: any;
     BillingAddress1: any;
     BillingAddress2: any;
@@ -127,7 +127,7 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
     super(props);
     this.state = {
       formData: {
-        AddressSameAsInProfile: "",
+        AddressSameAsInProfile_x00a0_: "",
         AssetSize: "",
         BillingAddress1: "",
         BillingAddress2: "",
@@ -240,7 +240,7 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
         const item = await this.spService.getItemById("Membership On-Boarding Request", itemId);
         // Populate formData with item values
         const mappedFormDate = {
-          AddressSameAsInProfile: item.AddressSameAsInProfile,
+          AddressSameAsInProfile_x00a0_: item.AddressSameAsInProfile_x00a0_,
           AssetSize: item.AssetSize,
           BillingAddress1: item.BillingAddress1,
           BillingAddress2: item.BillingAddress2,
@@ -789,12 +789,12 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
           />
           <Dropdown
             label="Address Same As In Profile"
-            selectedKey={this.state.formData.AddressSameAsInProfile ? this.state.formData.AddressSameAsInProfile : undefined}
+            selectedKey={this.state.formData.AddressSameAsInProfile_x00a0_ ? this.state.formData.AddressSameAsInProfile_x00a0_ : undefined}
             options={[
               { key: 'Yes', text: 'Yes' },
               { key: 'No', text: 'No' }
             ]}
-            onChanged={(option: IDropdownOption) => this.handleInputChange('AddressSameAsInProfile', option.text)}
+            onChanged={(option: IDropdownOption) => this.handleInputChange('AddressSameAsInProfile_x00a0_', option.text)}
           />
           <TextField
             label="Address 1"
