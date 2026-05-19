@@ -237,7 +237,7 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
 
       if (idParam) {
         const itemId = parseInt(idParam, 10);
-        const item = await this.spService.getItemById("Membership OnBoarding Request", itemId);
+        const item = await this.spService.getItemById("Membership On-Boarding Request", itemId);
         // Populate formData with item values
         const mappedFormDate = {
           AddressSameAsInProfile: item.AddressSameAsInProfile,
@@ -378,13 +378,13 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
       if (idParam) {
         // Update existing item
         itemId = parseInt(idParam, 10);
-        await sp.web.lists.getByTitle("Membership OnBoarding Request").items.getById(itemId).update(payload);
+        await sp.web.lists.getByTitle("Membership On-Boarding Request").items.getById(itemId).update(payload);
       } else {
         // Add new item
-        const item = await sp.web.lists.getByTitle("Membership OnBoarding Request").items.add(payload);
+        const item = await sp.web.lists.getByTitle("Membership On-Boarding Request").items.add(payload);
         itemId = item.data.ID;
         const title = `MO${this.padLeft(itemId.toString(), 4, '0')}`;
-        await sp.web.lists.getByTitle("Membership OnBoarding Request").items.getById(itemId).update({ Title: title });
+        await sp.web.lists.getByTitle("Membership On-Boarding Request").items.getById(itemId).update({ Title: title });
       }
 
       // Upload files
@@ -591,7 +591,7 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
           />
 
 
-          <Dropdown
+          <Dropdown 
             label="Type Of Pricing"
             selectedKey={this.state.formData.TypeofPricing ? this.state.formData.TypeofPricing : undefined}
             options={[

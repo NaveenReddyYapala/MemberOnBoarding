@@ -40,7 +40,7 @@ export default class MemberBoardingForms extends React.Component<IMemberBoarding
 
       if (!itemId) return;
 
-      const item = await this.spService.getItemById("Membership OnBoarding Request", itemId);
+      const item = await this.spService.getItemById("Membership On-Boarding Request", itemId);
       //  const params = new URLSearchParams(window.location.search);
       //   const idParam = params.get("ItemId");
       

@@ -12,7 +12,7 @@ export default class spservices {
     }
     public GetItems(): Promise<any[]> {
         return sp.web.lists
-            .getByTitle("Membership OnBoarding Request")
+            .getByTitle("Membership On-Boarding Request")
             .items
             .select("Id,Title").orderBy("ID", false)
             .top(4999)
