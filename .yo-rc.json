@@ -1,0 +1,11 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "isCreatingSolution": false,
+    "environment": "onprem19",
+    "version": "1.12.1",
+    "libraryName": "member-boarding",
+    "libraryId": "87ea9de2-48bb-4a37-8b04-23001f910981",
+    "packageManager": "npm",
+    "componentType": "webpart"
+  }
+}

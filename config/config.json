@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "member-boarding-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/memberBoarding/MemberBoardingWebPart.js",
+          "manifest": "./src/webparts/memberBoarding/MemberBoardingWebPart.manifest.json"
+        }
+      ]
+    },
+    "member-boarding-dash-board-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/memberBoardingDashBoard/MemberBoardingDashBoardWebPart.js",
+          "manifest": "./src/webparts/memberBoardingDashBoard/MemberBoardingDashBoardWebPart.manifest.json"
+        }
+      ]
+    },
+    "member-boarding-forms-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/memberBoardingForms/MemberBoardingFormsWebPart.js",
+          "manifest": "./src/webparts/memberBoardingForms/MemberBoardingFormsWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "MemberBoardingWebPartStrings": "lib/webparts/memberBoarding/loc/{locale}.js",
+    "MemberBoardingDashBoardWebPartStrings": "lib/webparts/memberBoardingDashBoard/loc/{locale}.js",
+    "MemberBoardingFormsWebPartStrings": "lib/webparts/memberBoardingForms/loc/{locale}.js",
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
+  }
+}
