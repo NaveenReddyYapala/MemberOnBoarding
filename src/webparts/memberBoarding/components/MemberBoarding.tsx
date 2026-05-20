@@ -11,6 +11,15 @@ import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/People
 import { Item, sp } from "@pnp/sp/presets/all";
 import { UrlQueryParameterCollection } from "@microsoft/sp-core-library";
 
+interface IMemberOnBoardingFile {
+  Id: number;
+  ReqNumber: string;
+  FileUplaodTeam: string;
+  FileLeafRef: string;
+  FileRef: string;
+}
+
+
 export interface ILookupValue {
   Id: number;
   Title: string;
@@ -119,6 +128,8 @@ export interface IMemberOnBoardingState {
   KAMName: any;
   selectedFiles: File[];
   LitigationFileSelection: File[];
+  getDocumentReviewFiles: IMemberOnBoardingFile[];
+  getLitigationFiles: IMemberOnBoardingFile[];
 }
 
 export default class MemberBoarding extends React.Component<IMemberBoardingProps, IMemberOnBoardingState> {
@@ -220,7 +231,9 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
       stateOptions: [],
       KAMName: [],
       selectedFiles: [],
-      LitigationFileSelection: []
+      LitigationFileSelection: [],
+      getDocumentReviewFiles: [],
+      getLitigationFiles: []
     };
     this.spService = new spservices(this.props.context);
   }
@@ -331,7 +344,18 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
           LitigationComment: item.LitigationComment,
           Status: item.Status
         }
-        this.setState({ formData: mappedFormDate });
+        // Query library items where Reqnumber = item.Title
+        const getFiles: IMemberOnBoardingFile[] = await sp.web.lists
+          .getByTitle("MemberOnBoardingFiles")
+          .items.filter(`ReqNumber eq '${item.Title}'`)
+          .select("Id,ReqNumber,FileUplaodTeam,FileLeafRef,FileRef")
+          .get();
+
+        const getDocumentReviewFiles = getFiles.filter(f => f.FileUplaodTeam === "DocumentReviewFile");
+        const getLitigationFiles = getFiles.filter(f => f.FileUplaodTeam === "LitigationFile");
+
+
+        this.setState({ formData: mappedFormDate, getDocumentReviewFiles, getLitigationFiles });
       }
     } catch (error) {
       console.log("error", error)
@@ -502,7 +526,6 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
           newFormData.NominatedNodalPincode = "";
         }
       }
-
       if (field === "DataAddressSameAsInProfile") {
         if (value === "Yes") {
           newFormData.DataAddress1 = prevState.formData.RegisteredOfficeAddress1;
@@ -518,7 +541,6 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
           newFormData.DataPinCode = "";
         }
       }
-
       if (field === "BillingAddressSameAsInProfile") {
         if (value === "Yes") {
           newFormData.BillingAddress1 = prevState.formData.RegisteredOfficeAddress1;
@@ -534,11 +556,55 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
           newFormData.BillingPinCode = "";
         }
       }
-
-
+      // If institution name changes, generate short code
+      if (field === "CreditInstitutionName") {
+        this.generateUniqueShortCode(value).then((shortCode) => {
+          this.setState({
+            formData: { ...newFormData, MemberShortCode: shortCode }
+          });
+        });
+      }
       return { formData: newFormData };
+
     });
   };
+  private async generateUniqueShortCode(name: string): Promise<string> {
+    // Keep only letters and spaces, convert to uppercase
+    let shortCode = name.replace(/[^a-zA-Z\s]/g, "").toUpperCase();
+
+    // Trim to max 12 characters (adjust as needed)
+    shortCode = shortCode.substring(0, 15).trim();
+
+    // Check if short code exists in MemberMaster list
+    const exists = await sp.web.lists.getByTitle("Member Master")
+      .items.filter(`ShortName eq '${shortCode}'`)
+      .get();
+
+    if (exists.length > 0) {
+      // If exists, add random LETTER suffix (no numbers)
+      const randomLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26)); // A–Z
+      shortCode = (shortCode + " " + randomLetter).trim();
+    }
+
+    return shortCode;
+  }
+
+  // private async generateUniqueShortCode(name: string): Promise<string> {
+  //   // Normalize and trim
+  //   let shortCode = name.replace(/[^a-zA-Z0-9]/g, "").toUpperCase().substring(0, 12);
+
+  //   // Check if short code exists in MemberMaster list
+  //   const exists = await sp.web.lists.getByTitle("Member Master")
+  //     .items.filter(`ShortName eq '${shortCode}'`)
+  //     .get();
+
+  //   if (exists.length > 0) {
+  //     // Add random suffix if collision
+  //     shortCode = shortCode + Math.random().toString(36).substring(2, 3).toUpperCase();
+  //   }
+
+  //   return shortCode;
+  // }
 
   private _onFormatDate = (date: Date): string => {
     // Format the date as '01 Sept 2024'
@@ -577,8 +643,17 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
     }
     this.setState({ LitigationFileSelection: LitigationFiles });
   };
+  private async handleKomChange(option: IDropdownOption) {
+    this.handleInputChange('KOMGroupingId', { Id: option.key, Title: option.text });
+
+    const kobCode = option.data as string;
+    const nextMemberCode = await this.spService.GetNextMemberCode(kobCode);
+
+    this.handleInputChange('NewMemberCode', nextMemberCode);
+  }
 
   public render(): React.ReactElement<IMemberBoardingProps> {
+
     return (
       <div className={styles.memberBoarding} >
 
@@ -594,21 +669,24 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
             label="Type of Institution"
             options={this.state.komOptions}
             selectedKey={this.state.formData.KOMGroupingId ? this.state.formData.KOMGroupingId.Id : undefined}
-            onChanged={(option: IDropdownOption) => {
-              this.handleInputChange('KOMGroupingId', { Id: option.key, Title: option.text });
-              this.handleInputChange('NewMemberCode', option.data as string);
-            }}
+            // onChanged={(option: IDropdownOption) => {
+            //this.handleInputChange('KOMGroupingId', { Id: option.key, Title: option.text });
+            // this.handleInputChange('NewMemberCode', option.data as string);
+            onChanged={(option: IDropdownOption) => this.handleKomChange(option)}
+          //  }}
           />
 
           <TextField
             label="Member Code"
             value={this.state.formData.NewMemberCode || ""}
             onChanged={(newValue) => this.handleInputChange('NewMemberCode', newValue)}
+            disabled
           />
           <TextField
             label="Member Short Name"
             value={this.state.formData.MemberShortCode || ""}
             onChanged={(newValue) => this.handleInputChange('MemberShortCode', newValue)}
+            disabled
           />
           <Dropdown
             label="GST Customer Type"
@@ -1192,9 +1270,21 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
                   </div>
                 ))}
               </div>
-
             </div>
           }
+        </div>
+
+        <div>
+          <h3>Document review Files</h3>
+          <div className={styles.attachmentsContainer}>
+          {this.state.getDocumentReviewFiles.map(file => (
+            <div key={file.Id} className={styles.fileCardView}>
+              <a href={file.FileRef} className={styles.fileNameView} target="_blank" rel="noopener noreferrer">
+                {file.FileLeafRef}
+              </a>
+            </div>
+          ))}
+          </div>
         </div>
 
         {/* Section 9: TVR Verification */}
@@ -1257,9 +1347,21 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
                     <span className={styles.fileName}>{file.name}</span>
                   </div>
                 ))}
-              </div>              
+              </div>
             </div>
           }
+        </div>
+        <div>
+          <h3>Litigation Files</h3>
+          <div className={styles.attachmentsContainer}>
+          {this.state.getLitigationFiles.map(file => (
+            <div key={file.Id} className={styles.fileCardView}>
+              <a href={file.FileRef} className={styles.fileNameView} target="_blank" rel="noopener noreferrer">
+                {file.FileLeafRef}
+              </a>
+            </div>
+          ))}
+          </div>
         </div>
 
         {/* Action buttons */}

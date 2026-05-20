@@ -28,6 +28,37 @@ export default class spservices {
       data: item.KOBCode
     }));
   }
+ public async GetNextMemberCode(kobCode: string): Promise<string> {
+  // Step 1: Get all member codes starting with kobCode
+  const web = Web("https://wisdombat.transunion.com/sites/apps");
+
+const items = await web.lists.getByTitle("Member Master")
+  //const items = await sp.web.lists.getByTitle("Member Master")
+    .items
+    .select("MemberCode")
+    .filter(`startswith(MemberCode,'${kobCode}')`)
+    .orderBy("MemberCode", true) // ascending
+    .get();
+
+  if (!items || items.length === 0) {
+    // No existing codes → start from 001
+    return kobCode + "0001";
+  }
+
+  // Step 2: Get the last (highest) code
+  const lastCode = items[items.length - 1].MemberCode; // e.g. "CU100"
+
+  // Step 3: Extract numeric part
+  const numPart = parseInt(lastCode.replace(kobCode, ""), 10);
+
+  // Step 4: Increment
+  const nextNum = numPart + 1;
+
+  // Step 5: Format with leading zeros (manual padding)
+  const nextCode = kobCode + ("0000" + nextNum).slice(-4);
+
+  return nextCode;
+}
 
   // Get dropdown options from StateList
   public async GetStateOptions(): Promise<IDropdownOption[]> {
