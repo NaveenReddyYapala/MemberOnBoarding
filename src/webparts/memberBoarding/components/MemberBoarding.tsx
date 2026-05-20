@@ -273,7 +273,7 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
           Devation_x002f_ExpectionApproval: !!item.Devation_x002f_ExpectionApproval,
           DuplicateName_x002f_Code_x002f_S: !!item.DuplicateName_x002f_Code_x002f_S,
           EmailAddress: item.EmailAddress,
-          GSTBillingStateId: item.GSTBillingState? {Id: item.GSTBillingState.Id, Title: item.GSTBillingState.Title}: null,
+          GSTBillingStateId: item.GSTBillingState ? { Id: item.GSTBillingState.Id, Title: item.GSTBillingState.Title } : null,
           GSTNumberExists: item.GSTNumberExists,
           ITSPOC: item.ITSPOC,
           KAMId: item.KAM ? { Id: item.KAM.Id, Title: item.KAM.Title, EMail: item.KAM.EMail } : null,
@@ -290,13 +290,13 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
           MemberShortCode: item.MemberShortCode,
           Mobile: item.Mobile,
           NameOfCoreBanking: item.NameOfCoreBanking,
-          NewBillingStateId: item.NewBillingState ? {Id: item.NewBillingState.Id, Title: item.NewBillingState.Title}: null,
-          NewBusinessAddressStateId: item.NewBusinessAddressState ? {Id: item.NewBusinessAddressState.Id, Title: item.NewBusinessAddressState.Title}: null,
-          NewDataStateId: item.NewDataState ? {Id: item.NewDataState.Id, Title: item.NewDataState.Title}: null,
+          NewBillingStateId: item.NewBillingState ? { Id: item.NewBillingState.Id, Title: item.NewBillingState.Title } : null,
+          NewBusinessAddressStateId: item.NewBusinessAddressState ? { Id: item.NewBusinessAddressState.Id, Title: item.NewBusinessAddressState.Title } : null,
+          NewDataStateId: item.NewDataState ? { Id: item.NewDataState.Id, Title: item.NewDataState.Title } : null,
           NewMemberCode: item.NewMemberCode,
-          NewNominatedNodalStateId: item.NewNominatedNodalState ? {Id: item.NewNominatedNodalState.Id, Title: item.NewNominatedNodalState.Title}: null,
+          NewNominatedNodalStateId: item.NewNominatedNodalState ? { Id: item.NewNominatedNodalState.Id, Title: item.NewNominatedNodalState.Title } : null,
           NewRegisteredNumber: item.NewRegisteredNumber,
-          NewRegisteredOfficeStateId: item.NewRegisteredOfficeState ? {Id: item.NewRegisteredOfficeState.Id, Title: item.NewRegisteredOfficeState.Title}: null,
+          NewRegisteredOfficeStateId: item.NewRegisteredOfficeState ? { Id: item.NewRegisteredOfficeState.Id, Title: item.NewRegisteredOfficeState.Title } : null,
           NominatedCity: item.NominatedCity,
           NominatedNodalAddress1: item.NominatedNodalAddress1,
           NominatedNodalAddress2: item.NominatedNodalAddress2,
@@ -344,7 +344,7 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
   private _cancel = () => {
     this.setState({});
   };
-  
+
   private _saveDraft = async () => {
     try {
       const { formData, KAMName, selectedFiles, LitigationFileSelection } = this.state;
@@ -460,14 +460,86 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
     const padding = Array(width - value.length + 1).join(paddingChar);
     return padding + value;
   }
-  private handleInputChange = (fieldName: string, value?: any) => {
-    this.setState(prevState => ({
-      formData: {
-        ...prevState.formData,
-        [fieldName]: value
+  // private handleInputChange = (fieldName: string, value?: any) => {
+  //   this.setState(prevState => ({
+  //     formData: {
+  //       ...prevState.formData,
+  //       [fieldName]: value
+  //     }
+  //   }));
+  // };
+  private handleInputChange = (field: string, value: any) => {
+    this.setState((prevState) => {
+      const newFormData = { ...prevState.formData, [field]: value };
+
+      if (field === "BusinessAddressSameAsInProfile") {
+        if (value === "Yes") {
+          newFormData.BusinessAddress1 = prevState.formData.RegisteredOfficeAddress1;
+          newFormData.BusinessAddress2 = prevState.formData.RegisteredOfficeAddress2;
+          newFormData.BusinessCIty = prevState.formData.RegisteredCity;
+          newFormData.NewBusinessAddressStateId = prevState.formData.NewRegisteredOfficeStateId;
+          newFormData.BusinessAddressPinCode = prevState.formData.RegisteredOfficePinCode;
+        } else {
+          newFormData.BusinessAddress1 = "";
+          newFormData.BusinessAddress2 = "";
+          newFormData.BusinessCIty = "";
+          newFormData.NewBusinessAddressStateId = null;
+          newFormData.BusinessAddressPinCode = "";
+        }
       }
-    }));
+      if (field === "AddressSameAsInProfile_x00a0_") {
+        if (value === "Yes") {
+          newFormData.NominatedNodalAddress1 = prevState.formData.RegisteredOfficeAddress1;
+          newFormData.NominatedNodalAddress2 = prevState.formData.RegisteredOfficeAddress2;
+          newFormData.NominatedCity = prevState.formData.RegisteredCity;
+          newFormData.NewNominatedNodalStateId = prevState.formData.NewRegisteredOfficeStateId;
+          newFormData.NominatedNodalPincode = prevState.formData.RegisteredOfficePinCode;
+        } else {
+          newFormData.NominatedNodalAddress1 = "";
+          newFormData.NominatedNodalAddress2 = "";
+          newFormData.NominatedCity = "";
+          newFormData.NewNominatedNodalStateId = null;
+          newFormData.NominatedNodalPincode = "";
+        }
+      }
+
+      if (field === "DataAddressSameAsInProfile") {
+        if (value === "Yes") {
+          newFormData.DataAddress1 = prevState.formData.RegisteredOfficeAddress1;
+          newFormData.DataAddress2 = prevState.formData.RegisteredOfficeAddress2;
+          newFormData.DataCity = prevState.formData.RegisteredCity;
+          newFormData.NewDataStateId = prevState.formData.NewRegisteredOfficeStateId;
+          newFormData.DataPinCode = prevState.formData.RegisteredOfficePinCode;
+        } else {
+          newFormData.DataAddress1 = "";
+          newFormData.DataAddress2 = "";
+          newFormData.DataCity = "";
+          newFormData.NewDataStateId = null;
+          newFormData.DataPinCode = "";
+        }
+      }
+
+      if (field === "BillingAddressSameAsInProfile") {
+        if (value === "Yes") {
+          newFormData.BillingAddress1 = prevState.formData.RegisteredOfficeAddress1;
+          newFormData.BillingAddress2 = prevState.formData.RegisteredOfficeAddress2;
+          newFormData.BillingCity = prevState.formData.RegisteredCity;
+          newFormData.NewBillingStateId = prevState.formData.NewRegisteredOfficeStateId;
+          newFormData.BillingPinCode = prevState.formData.RegisteredOfficePinCode;
+        } else {
+          newFormData.BillingAddress1 = "";
+          newFormData.BillingAddress2 = "";
+          newFormData.BillingCity = "";
+          newFormData.NewBillingStateId = null;
+          newFormData.BillingPinCode = "";
+        }
+      }
+
+
+      return { formData: newFormData };
+    });
   };
+
   private _onFormatDate = (date: Date): string => {
     // Format the date as '01 Sept 2024'
     const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
@@ -591,7 +663,7 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
           />
 
 
-          <Dropdown 
+          <Dropdown
             label="Type Of Pricing"
             selectedKey={this.state.formData.TypeofPricing ? this.state.formData.TypeofPricing : undefined}
             options={[
@@ -654,7 +726,7 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
             label="State"
             options={this.state.stateOptions}
             selectedKey={this.state.formData.NewRegisteredOfficeStateId ? this.state.formData.NewRegisteredOfficeStateId.Id : undefined}
-            onChanged={(option: IDropdownOption) => this.handleInputChange('NewRegisteredOfficeStateId', option.key)}
+            onChanged={(option: IDropdownOption) => this.handleInputChange('NewRegisteredOfficeStateId', { Id: option.key as number, Title: option.text })}
           />
           <TextField
             label="Pin Code"
@@ -679,29 +751,34 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
             label="City"
             value={this.state.formData.BusinessCIty || ""}
             onChanged={(newValue) => this.handleInputChange('BusinessCIty', newValue)}
+            disabled={this.state.formData.BusinessAddressSameAsInProfile === "Yes"}
           />
           <Dropdown
             label="State"
             options={this.state.stateOptions}
             selectedKey={this.state.formData.NewBusinessAddressStateId ? this.state.formData.NewBusinessAddressStateId.Id : undefined}
-            onChanged={(option: IDropdownOption) => this.handleInputChange('NewBusinessAddressStateId', option.key)}
+            onChanged={(option: IDropdownOption) => this.handleInputChange('NewBusinessAddressStateId', { Id: option.key as number, Title: option.text })}
+            disabled={this.state.formData.BusinessAddressSameAsInProfile === "Yes"}
           />
           <TextField
             label="Pin Code"
             value={this.state.formData.BusinessAddressPinCode || ""}
             onChanged={(newValue) => this.handleInputChange('BusinessAddressPinCode', newValue)}
+            disabled={this.state.formData.BusinessAddressSameAsInProfile === "Yes"}
           />
           <TextField
             label="Address 1"
             multiline
             value={this.state.formData.BusinessAddress1 || ""}
             onChanged={(newValue) => this.handleInputChange('BusinessAddress1', newValue)}
+            disabled={this.state.formData.BusinessAddressSameAsInProfile === "Yes"}
           />
           <TextField
             label="Address 2"
             multiline
             value={this.state.formData.BusinessAddress2 || ""}
             onChanged={(newValue) => this.handleInputChange('BusinessAddress2', newValue)}
+            disabled={this.state.formData.BusinessAddressSameAsInProfile === "Yes"}
           />
 
         </div>
@@ -801,25 +878,30 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
             multiline
             value={this.state.formData.NominatedNodalAddress1 || ""}
             onChanged={(newValue) => this.handleInputChange('NominatedNodalAddress1', newValue)}
+            disabled={this.state.formData.AddressSameAsInProfile_x00a0_ === "Yes"}
           />
           <TextField label="Address 2" multiline
             value={this.state.formData.NominatedNodalAddress2 || ""}
             onChanged={(newValue) => this.handleInputChange('NominatedNodalAddress2', newValue)}
+            disabled={this.state.formData.AddressSameAsInProfile_x00a0_ === "Yes"}
           />
           <TextField label="City"
             value={this.state.formData.NominatedCity || ""}
             onChanged={(newValue) => this.handleInputChange('NominatedCity', newValue)}
+            disabled={this.state.formData.AddressSameAsInProfile_x00a0_ === "Yes"}
           />
           <Dropdown
             label="State"
             options={this.state.stateOptions}
             selectedKey={this.state.formData.NewNominatedNodalStateId ? this.state.formData.NewNominatedNodalStateId.Id : undefined}
-            onChanged={(option: IDropdownOption) => this.handleInputChange('NewNominatedNodalStateId', option.key)}
+            onChanged={(option: IDropdownOption) => this.handleInputChange('NewNominatedNodalStateId', { Id: option.key as number, Title: option.text })}
+            disabled={this.state.formData.AddressSameAsInProfile_x00a0_ === "Yes"}
           />
           <TextField
             label="Pin Code"
             value={this.state.formData.NominatedNodalPincode || ""}
             onChanged={(newValue) => this.handleInputChange('NominatedNodalPincode', newValue)}
+            disabled={this.state.formData.AddressSameAsInProfile_x00a0_ === "Yes"}
           />
           <TextField
             label="Landline Number"
@@ -862,17 +944,20 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
           <TextField label="City"
             value={this.state.formData.DataCity || ""}
             onChanged={(newValue) => this.handleInputChange('DataCity', newValue)}
+            disabled={this.state.formData.DataAddressSameAsInProfile === "Yes"}
           />
           <Dropdown
             label="State"
             options={this.state.stateOptions}
             selectedKey={this.state.formData.NewDataStateId ? this.state.formData.NewDataStateId.Id : undefined}
-            onChanged={(option: IDropdownOption) => this.handleInputChange('NewDataStateId', option.key)}
+            onChanged={(option: IDropdownOption) => this.handleInputChange('NewDataStateId', { Id: option.key as number, Title: option.text })}
+            disabled={this.state.formData.DataAddressSameAsInProfile === "Yes"}
           />
           <TextField
             label="Pin Code"
             value={this.state.formData.DataPinCode || ""}
             onChanged={(newValue) => this.handleInputChange('DataPinCode', newValue)}
+            disabled={this.state.formData.DataAddressSameAsInProfile === "Yes"}
           />
           <TextField
             label="Landline Number"
@@ -890,10 +975,12 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
             multiline
             value={this.state.formData.DataAddress1 || ""}
             onChanged={(newValue) => this.handleInputChange('DataAddress1', newValue)}
+            disabled={this.state.formData.DataAddressSameAsInProfile === "Yes"}
           />
           <TextField label="Address 2" multiline
             value={this.state.formData.DataAddress2 || ""}
             onChanged={(newValue) => this.handleInputChange('DataAddress2', newValue)}
+            disabled={this.state.formData.DataAddressSameAsInProfile === "Yes"}
           />
         </div>
 
@@ -918,25 +1005,30 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
             multiline
             value={this.state.formData.BillingAddress1 || ""}
             onChanged={(newValue) => this.handleInputChange('BillingAddress1', newValue)}
+            disabled={this.state.formData.BillingAddressSameAsInProfile === "Yes"}
           />
           <TextField label="Address 2" multiline
             value={this.state.formData.BillingAddress2 || ""}
             onChanged={(newValue) => this.handleInputChange('BillingAddress2', newValue)}
+            disabled={this.state.formData.BillingAddressSameAsInProfile === "Yes"}
           />
           <TextField label="City"
             value={this.state.formData.BillingCity || ""}
             onChanged={(newValue) => this.handleInputChange('BillingCity', newValue)}
+            disabled={this.state.formData.BillingAddressSameAsInProfile === "Yes"}
           />
           <Dropdown
             label="State"
             options={this.state.stateOptions}
             selectedKey={this.state.formData.NewBillingStateId ? this.state.formData.NewBillingStateId.Id : undefined}
-            onChanged={(option: IDropdownOption) => this.handleInputChange('NewBillingStateId', option.key)}
+            onChanged={(option: IDropdownOption) => this.handleInputChange('NewBillingStateId', { Id: option.key as number, Title: option.text })}
+            disabled={this.state.formData.BillingAddressSameAsInProfile === "Yes"}
           />
           <TextField
             label="Pin Code"
             value={this.state.formData.BillingPinCode || ""}
             onChanged={(newValue) => this.handleInputChange('BillingPinCode', newValue)}
+            disabled={this.state.formData.BillingAddressSameAsInProfile === "Yes"}
           />
           <TextField
             label="Landline Number"
@@ -1093,20 +1185,13 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
           {(this.state.selectedFiles.length > 0) &&
             <div>
               <h1>Attachments :</h1>
-              {/* <div className={styles.attachBox}> */}
-              {this.state.selectedFiles && this.state.selectedFiles.length > 0 &&
-                <div>
-                  <div>
-                    <ul >
-                      {this.state.selectedFiles.map((file, index) => (
-                        <li key={index} >
-                          <span>{file.name}</span>
-                        </li>
-                      ))}
-                    </ul>
+              <div className={styles.attachmentsContainer}>
+                {this.state.selectedFiles.map((file, index) => (
+                  <div key={index} className={styles.fileCard}>
+                    <span className={styles.fileName}>{file.name}</span>
                   </div>
-                </div>
-              }
+                ))}
+              </div>
 
             </div>
           }
@@ -1116,7 +1201,7 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
         <h3 className={styles.sectionsLabel}> TVR Verification</h3>
         <div className={styles.formRow}>
           <Dropdown label="TVR Verification"
-          selectedKey={this.state.formData.TVRVerification ? this.state.formData.TVRVerification : undefined}
+            selectedKey={this.state.formData.TVRVerification ? this.state.formData.TVRVerification : undefined}
             options={[{ key: 'Connect', text: 'Connect' }, { key: 'Non-connect', text: 'Non-connect' }, { key: 'Approved', text: 'Approved' }, { key: 'Reject', text: 'Reject' }]}
             onChanged={(option: IDropdownOption) => this.handleInputChange('TVRVerification', option.text)}
           />
@@ -1130,22 +1215,22 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
         <h3 className={styles.sectionsLabel}> Litigation Checks</h3>
         <div className={styles.formRow}>
           <Dropdown label="Web search performed"
-          selectedKey={this.state.formData.WebSearchPerformed ? this.state.formData.WebSearchPerformed : undefined}
+            selectedKey={this.state.formData.WebSearchPerformed ? this.state.formData.WebSearchPerformed : undefined}
             options={[{ key: 'Yes', text: 'Yes' }, { key: 'No', text: 'No' }, { key: 'N/A', text: 'N/A' }]}
             onChanged={(option: IDropdownOption) => this.handleInputChange('WebSearchPerformed', option.text)}
           />
           <Dropdown label="MCA Check"
-          selectedKey={this.state.formData.MCACheck ? this.state.formData.MCACheck : undefined}
+            selectedKey={this.state.formData.MCACheck ? this.state.formData.MCACheck : undefined}
             options={[{ key: 'Yes', text: 'Yes' }, { key: 'No', text: 'No' }, { key: 'N/A', text: 'N/A' }]}
             onChanged={(option: IDropdownOption) => this.handleInputChange('MCACheck', option.text)}
           />
           <Dropdown label="RBI website Check"
-          selectedKey={this.state.formData.RBICheck ? this.state.formData.RBICheck : undefined}
+            selectedKey={this.state.formData.RBICheck ? this.state.formData.RBICheck : undefined}
             options={[{ key: 'Yes', text: 'Yes' }, { key: 'No', text: 'No' }, { key: 'N/A', text: 'N/A' }]}
             onChanged={(option: IDropdownOption) => this.handleInputChange('RBICheck', option.text)}
           />
           <Dropdown label="OFAC / Sanction check"
-          selectedKey={this.state.formData.OFACCheck ? this.state.formData.OFACCheck : undefined}
+            selectedKey={this.state.formData.OFACCheck ? this.state.formData.OFACCheck : undefined}
             options={[{ key: 'Yes', text: 'Yes' }, { key: 'No', text: 'No' }, { key: 'N/A', text: 'N/A' }]}
             onChanged={(option: IDropdownOption) => this.handleInputChange('OFACCheck', option.text)}
           />
@@ -1165,21 +1250,14 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
         <div>
           {(this.state.LitigationFileSelection.length > 0) &&
             <div>
-              <h1>Attachments :</h1>
-              {/* <div className={styles.attachBox}> */}
-              {this.state.LitigationFileSelection && this.state.LitigationFileSelection.length > 0 &&
-                <div>
-                  <div>
-                    <ul >
-                      {this.state.LitigationFileSelection.map((file, index) => (
-                        <li key={index} >
-                          <span>{file.name}</span>
-                        </li>
-                      ))}
-                    </ul>
+              <h1>Litigation Attachments :</h1>
+              <div className={styles.attachmentsContainer}>
+                {this.state.LitigationFileSelection.map((file, index) => (
+                  <div key={index} className={styles.fileCard}>
+                    <span className={styles.fileName}>{file.name}</span>
                   </div>
-                </div>
-              }
+                ))}
+              </div>              
             </div>
           }
         </div>
