@@ -9,10 +9,10 @@ export interface IBoardingItem {
   Id: number;
   Title: string;
   CreditInstitutionName: string;
-  KOMGrouping: {
-    Id: number;
-    Title: string;
-  };
+  // KOMGrouping: {
+  //   Id: number;
+  //   Title: string;
+  // };
   NewMemberCode: string;
   MemberShortCode: string;
   Status: string;
@@ -58,7 +58,6 @@ export default class MemberBoardingDashBoard extends React.Component<IMemberBoar
               <th>ID</th>
               <th>Title</th>
               <th>CreditInstitutionName</th>
-              <th>KOMGrouping</th>
               <th>NewMemberCode</th>
               <th>MemberShortCode</th>
               <th>Status</th>
@@ -82,7 +81,6 @@ export default class MemberBoardingDashBoard extends React.Component<IMemberBoar
                 <td>{item.Id}</td>
                 <td>{item.Title}</td>
                 <td>{item.CreditInstitutionName}</td>
-                <td>{item.KOMGrouping ? item.KOMGrouping.Title : ""}</td>
                 <td>{item.NewMemberCode}</td>
                 <td>{item.MemberShortCode}</td>
                 <td>{item.Status}</td>
