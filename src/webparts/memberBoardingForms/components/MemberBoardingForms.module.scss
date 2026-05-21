@@ -97,7 +97,8 @@
     text-align: center;
     margin: 13px 0;
   }
-  .fileHeaders{
+
+  .fileHeaders {
     font-family: 'Fluent MDL2 Hybrid Icons';
     padding: 8px 0;
     text-decoration: underline;
@@ -126,4 +127,23 @@
     gap: 1rem; // spacing between cards
     margin: 2% 0;
   }
+
+  .btnContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 3% 0;    
+  }
+
+  .btnStyles {
+      font-weight: bold;
+      font-size: 14px;
+      border-radius: 11px;
+      padding: 10px 30px;
+      background-color: #d1d1e8;
+      color: white;
+      cursor: pointer;
+  }
+
 }

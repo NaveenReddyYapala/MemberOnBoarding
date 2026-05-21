@@ -72,7 +72,7 @@ export default class LegalForm extends React.Component<ILegalFormProps, ILegalFo
     const { formData } = this.state;
     return (
       <div className={styles.memberBoardingForms}>
-        <h3>Legal Action Form</h3>
+        <h3 className={styles.sectionsLabel}>Legal Action Form</h3>
         {/* <p>ID: {formData.Id}</p>
         <p>Title: {formData.Title}</p>
         <p>Status: {formData.Status}</p> */}
@@ -98,8 +98,9 @@ export default class LegalForm extends React.Component<ILegalFormProps, ILegalFo
             }
           />
         </div>
-        <div>
-          <button type="button" onClick={this.handleSubmit} >Submit</button>
+        <div className={styles.btnContainer}>
+          <button type="button" className={styles.btnStyles} onClick={this.handleSubmit} >Submit</button>
+          <button type="button" className={styles.btnStyles} >Cancel</button>
         </div>
       </div>
     );
