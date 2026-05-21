@@ -33,6 +33,13 @@ export default class MemberBoardingDashBoard extends React.Component<IMemberBoar
   }
   public async componentDidMount() {
     try {
+      const style = document.createElement('style');
+      style.innerHTML = `    
+           .ms-Image-image { display: none; }
+           .ms-Persona-imageArea{ display: none; }
+           .ms-Persona-imageArea.imageArea-227 { display: none; }
+            `;
+      document.head.appendChild(style);
       //this._loadDropdownData();
       const getItems = await this.spService.getFilteredItems();
       this.setState({ getItems });

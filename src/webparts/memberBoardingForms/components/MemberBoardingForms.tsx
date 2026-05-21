@@ -239,6 +239,13 @@ export default class MemberBoardingForms extends React.Component<IMemberBoarding
   }
   public async componentDidMount() {
     try {
+      const style = document.createElement('style');
+      style.innerHTML = `    
+           .ms-Image-image { display: none; }
+           .ms-Persona-imageArea{ display: none; }
+           .ms-Persona-imageArea.imageArea-227 { display: none; }
+            `;
+      document.head.appendChild(style);
       const komOptions = await this.spService.GetKomGroupOptions();
       const stateOptions = await this.spService.GetStateOptions();
       this.setState({ komOptions, stateOptions });

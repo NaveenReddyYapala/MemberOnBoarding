@@ -240,6 +240,13 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
   public async componentDidMount() {
     try {
       //this._loadDropdownData();
+      const style = document.createElement('style');
+      style.innerHTML = `    
+           .ms-Image-image { display: none; }
+           .ms-Persona-imageArea{ display: none; }
+           .ms-Persona-imageArea.imageArea-227 { display: none; }
+            `;
+      document.head.appendChild(style);
       const komOptions = await this.spService.GetKomGroupOptions();
       const stateOptions = await this.spService.GetStateOptions();
       this.setState({ komOptions, stateOptions });
