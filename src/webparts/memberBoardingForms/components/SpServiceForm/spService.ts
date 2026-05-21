@@ -44,36 +44,50 @@ export default class spservices {
       data: item.KOBCode
     }));
   }
-  // public async getItemById(listName: string, id: any): Promise<any> {
-  //   const item = await sp.web.lists.getByTitle(listName).items.getById(id).select("Id", "Title", "Status").get();
-  //   return item;
-  // }
-
-//   public async getItemById(): Promise<any> {
-//   // Get query string
-//   const params = new URLSearchParams(window.location.search);
-//   const idParam = params.get("ID");
-
-//   if (!idParam) {
-//     throw new Error("No ID parameter found in URL");
-//   }
-
-//   const id = parseInt(idParam, 10);
-// console.log(id);
-//   const item = await sp.web.lists
-//     .getByTitle("Membership OnBoarding Request")
-//     .items.getById(id)
-//     .select("Id", "Title", "Status")
-//     .get();
-// console.log(item);
-//   return item;
-// }
-
+  
   public getGroupStatusMap() {
     return this.groupStatusMap;
   }
 
-  public async getItemById(listName: string, id: number): Promise<any> {
+//   public async getItemById(listName: string, id: number): Promise<any> {
+//     // First query: plain fields only
+//     const baseItem = await sp.web.lists.getByTitle(listName).items.getById(id)
+//       .select(
+//         "Id,Title, AddressSameAsInProfile_x00a0_, AssetSize, BillingAddress1, BillingAddress2, BillingAddressSameAsInProfile, BillingCity, BillingContactName, BillingEmailAddress, BillingPinCode, BillingSPOC, BillingTelephoneNumber, BusinessAddress1, BusinessAddress2, BusinessAddressPinCode, BusinessAddressSameAsInProfile, BusinessCIty, BusinessContactName, CertifiedLicenseIssuedByRBISigne, CertifiedROCCertificate, CreditInstitutionName, CreditRiskContact, DataAddress1, DataAddress2, DataAddressSameAsInProfile, DataCity, DataContactName, DataEmailAddress, DataPinCode, DataTelephoneNumber, DateOfMembership, Devation_x002f_ExpectionApproval, DuplicateName_x002f_Code_x002f_S, EmailAddress, GSTNumberExists, ITSPOC,  LandlineNumberOffice, LatestBalancesheet_x002f_AnnualR, LetterApplicationProspectsLetter, LetterAuthorityIssued, LicenseCancellation_x002f_OtherT, MCAWebsiteChecked, MembershipApplicationForm, MemberShortCode, Mobile, NameOfCoreBanking, NewMemberCode, NewRegisteredNumber, NominatedCity, NominatedNodalAddress1, NominatedNodalAddress2, NominatedNodalEmailAddress, NominatedNodalFaxNumber, NominatedNodalLandlineNumber, NominatedNodalOfficerName, NominatedNodalPincode, OperatingRuleBook, PAN, PaymentAnnualFee, PaymentOfMembershipFee, PricingAnnexure, Rate_x0020_Type, RBI_x002f_RegulatoryListChecked, RegisteredCity, RegisteredOfficeAddress1, RegisteredOfficeAddress2, RegisteredOfficePinCode, Remarks, Senddocumentsby, SiteVerificationreport, TAN, TypeofPricing,  TVRVerification, TVRComment, WebSearchPerformed, MCACheck, RBICheck, OFACCheck, LitigationComment, Status, LegalAction, LegalComment, FTPSupportAction, FTPSupportComment, IDSupportAction, IDSupportComment"
+//       )
+//       .get();
+
+//     // Second query: lookup/person fields only
+//     const lookupItem = await sp.web.lists.getByTitle(listName).items.getById(id)
+//     .select(
+//       "Author/Id", "Author/Title", "Author/EMail",
+//       "KAM/Id", "KAM/Title", "KAM/EMail",
+//       "KOMGrouping/Id", "KOMGrouping/Title",
+//       "GSTBillingState/Id", "GSTBillingState/Title",
+//       "NewBillingState/Id", "NewBillingState/Title",
+//       "NewBusinessAddressState/Id", "NewBusinessAddressState/Title",
+//       "NewDataState/Id", "NewDataState/Title",
+//       "NewNominatedNodalState/Id", "NewNominatedNodalState/Title",
+//       "NewRegisteredOfficeState/Id", "NewRegisteredOfficeState/Title"
+//     )
+//     .expand(
+//       "Author",
+//       "KAM",
+//       "KOMGrouping",
+//       "GSTBillingState",
+//       "NewBillingState",
+//       "NewBusinessAddressState",
+//       "NewDataState",
+//       "NewNominatedNodalState",
+//       "NewRegisteredOfficeState"
+//     )
+//     .get();
+
+//   // Merge results
+//   return { ...baseItem, ...lookupItem };
+// }
+
+public async getItemById(listName: string, id: number): Promise<any> {
     // First query: plain fields only
     const baseItem = await sp.web.lists.getByTitle(listName).items.getById(id)
       .select(
@@ -86,24 +100,24 @@ export default class spservices {
     .select(
       "Author/Id", "Author/Title", "Author/EMail",
       "KAM/Id", "KAM/Title", "KAM/EMail",
-      "KOMGrouping/Id", "KOMGrouping/Title",
-      "GSTBillingState/Id", "GSTBillingState/Title",
-      "NewBillingState/Id", "NewBillingState/Title",
-      "NewBusinessAddressState/Id", "NewBusinessAddressState/Title",
-      "NewDataState/Id", "NewDataState/Title",
-      "NewNominatedNodalState/Id", "NewNominatedNodalState/Title",
-      "NewRegisteredOfficeState/Id", "NewRegisteredOfficeState/Title"
+      "KOMGroupingId",
+      "GSTBillingStateId",
+      "NewBillingStateId",
+      "NewBusinessAddressStateId",
+      "NewDataStateId",
+      "NewNominatedNodalStateId",
+      "NewRegisteredOfficeStateId"
     )
     .expand(
       "Author",
-      "KAM",
-      "KOMGrouping",
-      "GSTBillingState",
-      "NewBillingState",
-      "NewBusinessAddressState",
-      "NewDataState",
-      "NewNominatedNodalState",
-      "NewRegisteredOfficeState"
+      "KAM"
+      // "KOMGrouping",
+      // "GSTBillingState",
+      // "NewBillingState",
+      // "NewBusinessAddressState",
+      // "NewDataState",
+      // "NewNominatedNodalState",
+      // "NewRegisteredOfficeState"
     )
     .get();
 

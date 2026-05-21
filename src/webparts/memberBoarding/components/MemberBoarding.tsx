@@ -10,6 +10,7 @@ import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/People
 //import { sp } from '@pnp/sp';
 import { Item, sp } from "@pnp/sp/presets/all";
 import { UrlQueryParameterCollection } from "@microsoft/sp-core-library";
+import { Web} from '@pnp/sp/presets/all';
 
 interface IMemberOnBoardingFile {
   Id: number;
@@ -241,10 +242,9 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
     try {
       //this._loadDropdownData();
       const style = document.createElement('style');
-      style.innerHTML = `    
-           .ms-Image-image { display: none; }
-           .ms-Persona-imageArea{ display: none; }
-           .ms-Persona-imageArea.imageArea-227 { display: none; }
+      style.innerHTML = `
+      .banner_dbeb3a78 { display: none; }
+      .pagetitle_f969f8ac { display: none; }
             `;
       document.head.appendChild(style);
       const komOptions = await this.spService.GetKomGroupOptions();
@@ -583,7 +583,10 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
     shortCode = shortCode.substring(0, 15).trim();
 
     // Check if short code exists in MemberMaster list
-    const exists = await sp.web.lists.getByTitle("Member Master")
+    const web = Web("https://wisdombat.transunion.com/sites/apps");
+    
+    const exists = await web.lists.getByTitle("Member Master")
+   // const exists = await sp.web.lists.getByTitle("Member Master")
       .items.filter(`ShortName eq '${shortCode}'`)
       .get();
 
