@@ -30,7 +30,7 @@ export default class MOClouserForm extends React.Component<IMOClouserFormProps, 
     let newStatus = "";
     switch (this.state.formData.LegalAction) {
       case "Approve":
-        newStatus = "Assigned To Finance";
+        newStatus = "Completed";
         break;
       case "SendBack":
         newStatus = "Assigned to Maker";
@@ -56,8 +56,8 @@ export default class MOClouserForm extends React.Component<IMOClouserFormProps, 
       await sp.web.lists.getByTitle("Membership On-Boarding Request")
         .items.getById(itemId)
         .update({
-          LegalAction: this.state.formData.LegalAction,
-          LegalComment: this.state.formData.LegalComment,
+          MOBClouserAction: this.state.formData.MOBClouserAction,
+          MOBClouserComment: this.state.formData.MOBClouserComment,
           Status: newStatus
         });
       alert("Form submitted successfully!");
@@ -86,7 +86,7 @@ export default class MOClouserForm extends React.Component<IMOClouserFormProps, 
               { key: 'Reject', text: 'Reject' }
             ]}
             onChanged={(option: IDropdownOption) =>
-              this.handleInputChange('MOClouserAction', option.text)
+              this.handleInputChange('MOBClouserAction', option.text)
             }
           />
           <TextField
@@ -94,7 +94,7 @@ export default class MOClouserForm extends React.Component<IMOClouserFormProps, 
             multiline
             value={formData.LegalComment || ""}
             onChanged={(newValue) =>
-              this.handleInputChange('MOClouserComment', newValue)
+              this.handleInputChange('MOBClouserComment', newValue)
             }
           />
         </div>

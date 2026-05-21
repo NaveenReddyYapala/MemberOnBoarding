@@ -56,8 +56,8 @@ export default class CheckerForm extends React.Component<ICheckerFormProps, IChe
       await sp.web.lists.getByTitle("Membership On-Boarding Request")
         .items.getById(itemId)
         .update({
-          LegalAction: this.state.formData.LegalAction,
-          LegalComment: this.state.formData.LegalComment,
+          CheckerAction: this.state.formData.CheckerAction,
+          CheckerComment: this.state.formData.CheckerComment,
           Status: newStatus
         });
       alert("Form submitted successfully!");

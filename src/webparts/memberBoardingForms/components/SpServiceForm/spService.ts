@@ -18,8 +18,10 @@ export default class spservices {
     "LegalTeam": "Assigned To Legal",
     "CheckerTeam": "Assigned To Checker",
     "Member On-Boarding Finance Team": "Assigned To Finance",
-    "ID Support Team": "Assigned To IDSupport",
-    "FTP Support Team": "Assigned To FTPSupport",
+    "ID Support Team": "Assigned To UAM",
+    "FTP Support Team": "Assigned To UAM",
+    // "ID Support Team": "Assigned To IDSupport",
+    // "FTP Support Team": "Assigned To FTPSupport",
     "Membership On-Boarding Closure": "Assigned To Closure"
   };
 
@@ -75,7 +77,7 @@ export default class spservices {
     // First query: plain fields only
     const baseItem = await sp.web.lists.getByTitle(listName).items.getById(id)
       .select(
-        "Id,Title, AddressSameAsInProfile_x00a0_, AssetSize, BillingAddress1, BillingAddress2, BillingAddressSameAsInProfile, BillingCity, BillingContactName, BillingEmailAddress, BillingPinCode, BillingSPOC, BillingTelephoneNumber, BusinessAddress1, BusinessAddress2, BusinessAddressPinCode, BusinessAddressSameAsInProfile, BusinessCIty, BusinessContactName, CertifiedLicenseIssuedByRBISigne, CertifiedROCCertificate, CreditInstitutionName, CreditRiskContact, DataAddress1, DataAddress2, DataAddressSameAsInProfile, DataCity, DataContactName, DataEmailAddress, DataPinCode, DataTelephoneNumber, DateOfMembership, Devation_x002f_ExpectionApproval, DuplicateName_x002f_Code_x002f_S, EmailAddress, GSTNumberExists, ITSPOC,  LandlineNumberOffice, LatestBalancesheet_x002f_AnnualR, LetterApplicationProspectsLetter, LetterAuthorityIssued, LicenseCancellation_x002f_OtherT, MCAWebsiteChecked, MembershipApplicationForm, MemberShortCode, Mobile, NameOfCoreBanking, NewMemberCode, NewRegisteredNumber, NominatedCity, NominatedNodalAddress1, NominatedNodalAddress2, NominatedNodalEmailAddress, NominatedNodalFaxNumber, NominatedNodalLandlineNumber, NominatedNodalOfficerName, NominatedNodalPincode, OperatingRuleBook, PAN, PaymentAnnualFee, PaymentOfMembershipFee, PricingAnnexure, Rate_x0020_Type, RBI_x002f_RegulatoryListChecked, RegisteredCity, RegisteredOfficeAddress1, RegisteredOfficeAddress2, RegisteredOfficePinCode, Remarks, Senddocumentsby, SiteVerificationreport, TAN, TypeofPricing,  TVRVerification, TVRComment, WebSearchPerformed, MCACheck, RBICheck, OFACCheck, LitigationComment, Status"
+        "Id,Title, AddressSameAsInProfile_x00a0_, AssetSize, BillingAddress1, BillingAddress2, BillingAddressSameAsInProfile, BillingCity, BillingContactName, BillingEmailAddress, BillingPinCode, BillingSPOC, BillingTelephoneNumber, BusinessAddress1, BusinessAddress2, BusinessAddressPinCode, BusinessAddressSameAsInProfile, BusinessCIty, BusinessContactName, CertifiedLicenseIssuedByRBISigne, CertifiedROCCertificate, CreditInstitutionName, CreditRiskContact, DataAddress1, DataAddress2, DataAddressSameAsInProfile, DataCity, DataContactName, DataEmailAddress, DataPinCode, DataTelephoneNumber, DateOfMembership, Devation_x002f_ExpectionApproval, DuplicateName_x002f_Code_x002f_S, EmailAddress, GSTNumberExists, ITSPOC,  LandlineNumberOffice, LatestBalancesheet_x002f_AnnualR, LetterApplicationProspectsLetter, LetterAuthorityIssued, LicenseCancellation_x002f_OtherT, MCAWebsiteChecked, MembershipApplicationForm, MemberShortCode, Mobile, NameOfCoreBanking, NewMemberCode, NewRegisteredNumber, NominatedCity, NominatedNodalAddress1, NominatedNodalAddress2, NominatedNodalEmailAddress, NominatedNodalFaxNumber, NominatedNodalLandlineNumber, NominatedNodalOfficerName, NominatedNodalPincode, OperatingRuleBook, PAN, PaymentAnnualFee, PaymentOfMembershipFee, PricingAnnexure, Rate_x0020_Type, RBI_x002f_RegulatoryListChecked, RegisteredCity, RegisteredOfficeAddress1, RegisteredOfficeAddress2, RegisteredOfficePinCode, Remarks, Senddocumentsby, SiteVerificationreport, TAN, TypeofPricing,  TVRVerification, TVRComment, WebSearchPerformed, MCACheck, RBICheck, OFACCheck, LitigationComment, Status, LegalAction, LegalComment, FTPSupportAction, FTPSupportComment, IDSupportAction, IDSupportComment"
       )
       .get();
 

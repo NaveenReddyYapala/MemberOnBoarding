@@ -30,7 +30,7 @@ export default class LegalForm extends React.Component<ILegalFormProps, ILegalFo
     let newStatus = "";
     switch (this.state.formData.LegalAction) {
       case "Approve":
-        newStatus = "Assigned To Finance";
+        newStatus = "Assigned To Checker";
         break;
       case "SendBack":
         newStatus = "Assigned to Maker";

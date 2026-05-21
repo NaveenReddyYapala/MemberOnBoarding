@@ -18,8 +18,10 @@ export default class spservices {
     "LegalTeam": "Assigned To Legal",
     "CheckerTeam": "Assigned To Checker",
     "Member On-Boarding Finance Team": "Assigned To Finance",
-    "ID Support Team": "Assigned To IDSupport",
-    "FTP Support Team": "Assigned To FTPSupport",
+    "ID Support Team": "Assigned To UAM",
+    "FTP Support Team": "Assigned To UAM",
+    // "ID Support Team": "Assigned To IDSupport",
+    // "FTP Support Team": "Assigned To FTPSupport",
     "Membership On-Boarding Closure": "Assigned To Closure"
   };
 
@@ -67,13 +69,13 @@ export default class spservices {
 
     // Build filter for items created by current user with Status = Draft
     const draftFilter = `(Author/Id eq ${currentUser.Id} and Status eq 'Draft')`;
-
+const makerFilter = `(Author/Id eq ${currentUser.Id} and Status eq 'Assigned to Maker')`;
     // Combine filters
     let filterQuery = "";
     if (statusFilter) {
-      filterQuery = `${statusFilter} or ${draftFilter}`;
+      filterQuery = `${statusFilter} or ${draftFilter} or ${makerFilter}`;
     } else {
-      filterQuery = draftFilter;
+      filterQuery = `${draftFilter} or ${makerFilter}`;
     }
 
     const items = await sp.web.lists.getByTitle("Membership On-Boarding Request").items

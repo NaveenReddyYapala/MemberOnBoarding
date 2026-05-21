@@ -26,46 +26,99 @@ export default class IDSupportForm extends React.Component<IIDSupportFormProps, 
     }));
   };
 
-  private handleSubmit = async () => {
-    let newStatus = "";
-    switch (this.state.formData.LegalAction) {
-      case "Approve":
-        newStatus = "Assigned To Finance";
-        break;
-      case "SendBack":
-        newStatus = "Assigned to Maker";
-        break;
-      case "Reject":
-        newStatus = "Rejected";
-        break;
-      default:
-        newStatus = this.state.formData.Status;
+  // private handleSubmit = async () => {
+  //   let newStatus = "";
+  //   switch (this.state.formData.LegalAction) {
+  //     case "Approve":
+  //       newStatus = "Assigned To Closure";
+  //       break;
+  //     case "SendBack":
+  //       newStatus = "Assigned to Maker";
+  //       break;
+  //     case "Reject":
+  //       newStatus = "Rejected";
+  //       break;
+  //     default:
+  //       newStatus = this.state.formData.Status;
+  //   }
+
+  //   const queryParams = new UrlQueryParameterCollection(window.location.href);
+  //   const idParam = queryParams.getValue("ItemId"); // or "itemId" depending on your URL
+
+  //   if (!idParam) {
+  //     alert("No ItemId found in query string");
+  //     return;
+  //   }
+
+  //   const itemId = parseInt(idParam, 10);
+
+  //   try {
+  //     await sp.web.lists.getByTitle("Membership On-Boarding Request")
+  //       .items.getById(itemId)
+  //       .update({
+  //         IDSupportAction: this.state.formData.IDSupportAction,
+  //         IDSupportComment: this.state.formData.IDSupportComment,
+  //         Status: newStatus
+  //       });
+  //     alert("Form submitted successfully!");
+  //   } catch (err) {
+  //     console.error("Error updating item:", err);
+  //     alert("Error saving data.");
+  //   }
+  // };
+private handleSubmit = async () => {
+  let newStatus: string | null = null; // use null to indicate "don't update"
+
+  switch (this.state.formData.IDSupportAction) {
+    case "Approve":
+      if (this.state.formData.FTPSupportAction === "Approved") {
+        newStatus = "Assigned To Clouser";
+      } else {
+        newStatus = null;
+      }
+      break;
+    case "SendBack":
+      newStatus = "Assigned to Maker";
+      break;
+    case "Reject":
+      newStatus = "Rejected";
+      break;
+    default:
+      newStatus = this.state.formData.Status;
+  }
+
+  const queryParams = new UrlQueryParameterCollection(window.location.href);
+  const idParam = queryParams.getValue("ItemId");
+
+  if (!idParam) {
+    alert("No ItemId found in query string");
+    return;
+  }
+
+  const itemId = parseInt(idParam, 10);
+
+  try {
+    const updatePayload: any = {
+      IDSupportAction: this.state.formData.IDSupportAction,
+          IDSupportComment: this.state.formData.IDSupportComment,
+    };
+
+    // Only include Status if newStatus is not null
+    if (newStatus !== null) {
+      updatePayload.Status = newStatus;
     }
 
-    const queryParams = new UrlQueryParameterCollection(window.location.href);
-    const idParam = queryParams.getValue("ItemId"); // or "itemId" depending on your URL
+    await sp.web.lists.getByTitle("Membership On-Boarding Request")
+      .items.getById(itemId)
+      .update(updatePayload);
 
-    if (!idParam) {
-      alert("No ItemId found in query string");
-      return;
-    }
+    alert("Form submitted successfully!");
+  } catch (err) {
+    console.error("Error updating item:", err);
+    alert("Error saving data.");
+  }
+};
 
-    const itemId = parseInt(idParam, 10);
-
-    try {
-      await sp.web.lists.getByTitle("Membership On-Boarding Request")
-        .items.getById(itemId)
-        .update({
-          LegalAction: this.state.formData.LegalAction,
-          LegalComment: this.state.formData.LegalComment,
-          Status: newStatus
-        });
-      alert("Form submitted successfully!");
-    } catch (err) {
-      console.error("Error updating item:", err);
-      alert("Error saving data.");
-    }
-  };
 
 
   render() {
@@ -81,7 +134,7 @@ export default class IDSupportForm extends React.Component<IIDSupportFormProps, 
           <Dropdown
             label="IDSupport Action"
             options={[
-              { key: 'Approve', text: 'Approve' },
+              { key: 'Approved', text: 'Approved' },
               { key: 'SendBack', text: 'SendBack' },
               { key: 'Reject', text: 'Reject' }
             ]}

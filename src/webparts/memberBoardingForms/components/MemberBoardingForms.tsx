@@ -126,6 +126,12 @@ export interface IMemberBoardingFormsState {
     OFACCheck: any;
     LitigationComment: any;
     Status: any;
+    LegalAction: any;
+    LegalComment: any;
+    FTPSupportAction: any;
+    FTPSupportComment: any;
+    IDSupportAction: any;
+    IDSupportComment: any;
   };
   userGroups: string[];
   getDocumentReviewFiles: IMemberOnBoardingFile[];
@@ -232,7 +238,13 @@ export default class MemberBoardingForms extends React.Component<IMemberBoarding
         RBICheck: "",
         OFACCheck: "",
         LitigationComment: "",
-        Status: ""
+        Status: "",
+        LegalAction: "",
+        LegalComment: "",
+        FTPSupportAction: "",
+        FTPSupportComment: "",
+        IDSupportAction: "",
+        IDSupportComment: ""
       },
     };
     this.spService = new spservices(this.props.context);
@@ -349,7 +361,13 @@ export default class MemberBoardingForms extends React.Component<IMemberBoarding
         RBICheck: item.RBICheck,
         OFACCheck: item.OFACCheck,
         LitigationComment: item.LitigationComment,
-        Status: item.Status
+        Status: item.Status,
+        LegalAction: item.LegalAction,
+        LegalComment: item.LegalComment,
+        FTPSupportAction: item.FTPSupportAction,
+        FTPSupportComment: item.FTPSupportComment,
+        IDSupportAction: item.IDSupportAction,
+        IDSupportComment: item.IDSupportComment
       }
       const userGroups = await this.spService.getUserGroups();
       const getFiles: IMemberOnBoardingFile[] = await sp.web.lists

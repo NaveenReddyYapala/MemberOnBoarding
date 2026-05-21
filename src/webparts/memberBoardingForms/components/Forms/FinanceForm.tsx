@@ -30,7 +30,7 @@ export default class FinanceForm extends React.Component<IFinanceFormProps, IFin
     let newStatus = "";
     switch (this.state.formData.LegalAction) {
       case "Approve":
-        newStatus = "Assigned To Finance";
+        newStatus = "Assigned To UAM";
         break;
       case "SendBack":
         newStatus = "Assigned to Maker";
@@ -56,8 +56,8 @@ export default class FinanceForm extends React.Component<IFinanceFormProps, IFin
       await sp.web.lists.getByTitle("Membership On-Boarding Request")
         .items.getById(itemId)
         .update({
-          LegalAction: this.state.formData.LegalAction,
-          LegalComment: this.state.formData.LegalComment,
+          FinanceAction: this.state.formData.FinanceAction,
+          FinanceComment: this.state.formData.FinanceComment,
           Status: newStatus
         });
       alert("Form submitted successfully!");
