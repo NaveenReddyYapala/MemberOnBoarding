@@ -58,6 +58,8 @@ export default class CheckerForm extends React.Component<ICheckerFormProps, IChe
         .update({
           CheckerAction: this.state.formData.CheckerAction,
           CheckerComment: this.state.formData.CheckerComment,
+          FinanceStartDate: new Date(),
+          CheckerEndDate: new Date(),
           Status: newStatus
         });
       alert("Form submitted successfully!");

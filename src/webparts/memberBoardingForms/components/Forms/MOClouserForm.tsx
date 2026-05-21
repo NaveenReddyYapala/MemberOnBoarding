@@ -58,6 +58,7 @@ export default class MOClouserForm extends React.Component<IMOClouserFormProps, 
         .update({
           MOBClouserAction: this.state.formData.MOBClouserAction,
           MOBClouserComment: this.state.formData.MOBClouserComment,
+          MOBClouserEndDate: new Date(),
           Status: newStatus
         });
       alert("Form submitted successfully!");

@@ -101,11 +101,13 @@ private handleSubmit = async () => {
     const updatePayload: any = {
       IDSupportAction: this.state.formData.IDSupportAction,
           IDSupportComment: this.state.formData.IDSupportComment,
+          IDEndDate: new Date()
     };
 
     // Only include Status if newStatus is not null
     if (newStatus !== null) {
       updatePayload.Status = newStatus;
+      updatePayload.MOBClouserStartDate = new Date();
     }
 
     await sp.web.lists.getByTitle("Membership On-Boarding Request")
@@ -135,8 +137,7 @@ private handleSubmit = async () => {
             label="IDSupport Action"
             options={[
               { key: 'Approved', text: 'Approved' },
-              { key: 'SendBack', text: 'SendBack' },
-              { key: 'Reject', text: 'Reject' }
+              { key: 'SendBack', text: 'SendBack' }
             ]}
             onChanged={(option: IDropdownOption) =>
               this.handleInputChange('IDSupportAction', option.text)

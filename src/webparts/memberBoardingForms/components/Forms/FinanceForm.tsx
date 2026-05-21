@@ -58,6 +58,9 @@ export default class FinanceForm extends React.Component<IFinanceFormProps, IFin
         .update({
           FinanceAction: this.state.formData.FinanceAction,
           FinanceComment: this.state.formData.FinanceComment,
+          FinanceEndDate: new Date(),
+          FTPStartDate: new Date(),
+          IDStartDate: new Date(),
           Status: newStatus
         });
       alert("Form submitted successfully!");
@@ -82,8 +85,7 @@ export default class FinanceForm extends React.Component<IFinanceFormProps, IFin
             label="Finance Action"
             options={[
               { key: 'Approve', text: 'Approve' },
-              { key: 'SendBack', text: 'SendBack' },
-              { key: 'Reject', text: 'Reject' }
+              { key: 'SendBack', text: 'SendBack' }
             ]}
             onChanged={(option: IDropdownOption) =>
               this.handleInputChange('FinanceAction', option.text)

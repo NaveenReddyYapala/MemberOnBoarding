@@ -58,6 +58,8 @@ export default class LegalForm extends React.Component<ILegalFormProps, ILegalFo
         .update({
           LegalAction: this.state.formData.LegalAction,
           LegalComment: this.state.formData.LegalComment,
+          LegalEndDate: new Date(),
+          CheckerStartDate: new Date(),
           Status: newStatus
         });
       alert("Form submitted successfully!");

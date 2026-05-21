@@ -102,12 +102,14 @@ export default class FTPSupportForm extends React.Component<IFTPSupportFormProps
   try {
     const updatePayload: any = {
       FTPSupportAction: this.state.formData.FTPSupportAction,
-      FTPSupportComment: this.state.formData.FTPSupportComment
+      FTPSupportComment: this.state.formData.FTPSupportComment,
+      FTPEndDate: new Date()
     };
 
     // Only include Status if newStatus is not null
     if (newStatus !== null) {
       updatePayload.Status = newStatus;
+      updatePayload.MOBClouserStartDate = new Date();
     }
 
     await sp.web.lists.getByTitle("Membership On-Boarding Request")
@@ -136,8 +138,7 @@ export default class FTPSupportForm extends React.Component<IFTPSupportFormProps
             label="FTPSupport Action"
             options={[
               { key: 'Approved', text: 'Approved' },
-              { key: 'SendBack', text: 'SendBack' },
-              { key: 'Reject', text: 'Reject' }
+              { key: 'SendBack', text: 'SendBack' }
             ]}
             onChanged={(option: IDropdownOption) =>
               this.handleInputChange('FTPSupportAction', option.text)
