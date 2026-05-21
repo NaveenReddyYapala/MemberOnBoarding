@@ -123,6 +123,30 @@ export interface IMemberOnBoardingState {
     OFACCheck: any;
     LitigationComment: any;
     Status: any;
+    LegalAction: any;
+    LegalComment: any;
+    FTPSupportAction: any;
+    FTPSupportComment: any;
+    IDSupportAction: any;
+    IDSupportComment: any;
+    CheckerAction: any;
+        CheckerComment: any;
+        CheckerEndDate: Date | null;
+        CheckerStartDate: Date | null;
+        FinanceAction: any;
+        FinanceComment: any;
+        FinanceEndDate: Date | null;
+        FinanceStartDate: Date | null;
+        FTPEndDate: Date | null,
+        FTPStartDate: Date | null,
+        IDEndDate: Date | null,
+        IDStartDate: Date | null,
+        LegalEndDate: Date | null,
+        LegalStartDate: Date | null,
+        MOBClouserAction: any;
+        MOBClouserComment: any;
+        MOBClouserEndDate: Date | null,
+        MOBClouserStartDate: Date | null
   };
   komOptions: IDropdownOption[];
   stateOptions: IDropdownOption[];
@@ -226,7 +250,31 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
         RBICheck: "",
         OFACCheck: "",
         LitigationComment: "",
-        Status: ""
+        Status: "",
+        LegalAction: "",
+        LegalComment: "",
+        FTPSupportAction: "",
+        FTPSupportComment: "",
+        IDSupportAction: "",
+        IDSupportComment: "",
+        CheckerAction: "",
+        CheckerComment: "",
+        CheckerEndDate: null,
+        CheckerStartDate: null,
+        FinanceAction: "",
+        FinanceComment: "",
+        FinanceEndDate: null,
+        FinanceStartDate: null,
+        FTPEndDate: null,
+        FTPStartDate: null,
+        IDEndDate: null,
+        IDStartDate: null,
+        LegalEndDate: null,
+        LegalStartDate: null,
+        MOBClouserAction: "",
+        MOBClouserComment: "",
+        MOBClouserEndDate: null,
+        MOBClouserStartDate: null
       },
       komOptions: [],
       stateOptions: [],
@@ -349,7 +397,31 @@ export default class MemberBoarding extends React.Component<IMemberBoardingProps
           RBICheck: item.RBICheck,
           OFACCheck: item.OFACCheck,
           LitigationComment: item.LitigationComment,
-          Status: item.Status
+          Status: item.Status,
+          LegalAction: item.LegalAction,
+        LegalComment: item.LegalComment,
+        FTPSupportAction: item.FTPSupportAction,
+        FTPSupportComment: item.FTPSupportComment,
+        IDSupportAction: item.IDSupportAction,
+        IDSupportComment: item.IDSupportComment,
+        CheckerAction: item.CheckerAction,
+        CheckerComment: item.CheckerComment,
+        CheckerEndDate: item.CheckerEndDate ? new Date(item.CheckerEndDate) : null,
+        CheckerStartDate: item.CheckerStartDate ? new Date(item.CheckerStartDate) : null,
+        FinanceAction: item.FinanceAction,
+        FinanceComment: item.FinanceComment,
+        FinanceEndDate: item.FinanceEndDate ? new Date(item.FinanceEndDate) : null,
+        FinanceStartDate: item.FinanceStartDate ? new Date(item.FinanceStartDate) : null,
+        FTPEndDate: item.FTPEndDate ? new Date(item.FTPEndDate) : null,
+        FTPStartDate: item.FTPStartDate ? new Date(item.FTPStartDate) : null,
+        IDEndDate: item.IDEndDate ? new Date(item.IDEndDate) : null,
+        IDStartDate: item.IDStartDate ? new Date(item.IDStartDate) : null,
+        LegalEndDate: item.LegalEndDate ? new Date(item.LegalEndDate) : null,
+        LegalStartDate: item.LegalStartDate ? new Date(item.LegalStartDate) : null,
+        MOBClouserAction: item.MOBClouserAction,
+        MOBClouserComment: item.MOBClouserComment,
+        MOBClouserEndDate: item.MOBClouserEndDate ? new Date(item.MOBClouserEndDate) : null,
+        MOBClouserStartDate: item.MOBClouserStartDate ? new Date(item.MOBClouserStartDate) : null,
         }
         // Query library items where Reqnumber = item.Title
         const getFiles: IMemberOnBoardingFile[] = await sp.web.lists

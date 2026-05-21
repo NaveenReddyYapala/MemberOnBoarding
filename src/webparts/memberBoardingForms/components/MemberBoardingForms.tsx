@@ -132,6 +132,24 @@ export interface IMemberBoardingFormsState {
     FTPSupportComment: any;
     IDSupportAction: any;
     IDSupportComment: any;
+    CheckerAction: any;
+        CheckerComment: any;
+        CheckerEndDate: Date | null;
+        CheckerStartDate: Date | null;
+        FinanceAction: any;
+        FinanceComment: any;
+        FinanceEndDate: Date | null;
+        FinanceStartDate: Date | null;
+        FTPEndDate: Date | null,
+        FTPStartDate: Date | null,
+        IDEndDate: Date | null,
+        IDStartDate: Date | null,
+        LegalEndDate: Date | null,
+        LegalStartDate: Date | null,
+        MOBClouserAction: any;
+        MOBClouserComment: any;
+        MOBClouserEndDate: Date | null,
+        MOBClouserStartDate: Date | null
   };
   userGroups: string[];
   getDocumentReviewFiles: IMemberOnBoardingFile[];
@@ -244,7 +262,25 @@ export default class MemberBoardingForms extends React.Component<IMemberBoarding
         FTPSupportAction: "",
         FTPSupportComment: "",
         IDSupportAction: "",
-        IDSupportComment: ""
+        IDSupportComment: "",
+        CheckerAction: "",
+        CheckerComment: "",
+        CheckerEndDate: null,
+        CheckerStartDate: null,
+        FinanceAction: "",
+        FinanceComment: "",
+        FinanceEndDate: null,
+        FinanceStartDate: null,
+        FTPEndDate: null,
+        FTPStartDate: null,
+        IDEndDate: null,
+        IDStartDate: null,
+        LegalEndDate: null,
+        LegalStartDate: null,
+        MOBClouserAction: "",
+        MOBClouserComment: "",
+        MOBClouserEndDate: null,
+        MOBClouserStartDate: null
       },
     };
     this.spService = new spservices(this.props.context);
@@ -366,7 +402,25 @@ export default class MemberBoardingForms extends React.Component<IMemberBoarding
         FTPSupportAction: item.FTPSupportAction,
         FTPSupportComment: item.FTPSupportComment,
         IDSupportAction: item.IDSupportAction,
-        IDSupportComment: item.IDSupportComment
+        IDSupportComment: item.IDSupportComment,
+        CheckerAction: item.CheckerAction,
+        CheckerComment: item.CheckerComment,
+        CheckerEndDate: item.CheckerEndDate ? new Date(item.CheckerEndDate) : null,
+        CheckerStartDate: item.CheckerStartDate ? new Date(item.CheckerStartDate) : null,
+        FinanceAction: item.FinanceAction,
+        FinanceComment: item.FinanceComment,
+        FinanceEndDate: item.FinanceEndDate ? new Date(item.FinanceEndDate) : null,
+        FinanceStartDate: item.FinanceStartDate ? new Date(item.FinanceStartDate) : null,
+        FTPEndDate: item.FTPEndDate ? new Date(item.FTPEndDate) : null,
+        FTPStartDate: item.FTPStartDate ? new Date(item.FTPStartDate) : null,
+        IDEndDate: item.IDEndDate ? new Date(item.IDEndDate) : null,
+        IDStartDate: item.IDStartDate ? new Date(item.IDStartDate) : null,
+        LegalEndDate: item.LegalEndDate ? new Date(item.LegalEndDate) : null,
+        LegalStartDate: item.LegalStartDate ? new Date(item.LegalStartDate) : null,
+        MOBClouserAction: item.MOBClouserAction,
+        MOBClouserComment: item.MOBClouserComment,
+        MOBClouserEndDate: item.MOBClouserEndDate ? new Date(item.MOBClouserEndDate) : null,
+        MOBClouserStartDate: item.MOBClouserStartDate ? new Date(item.MOBClouserStartDate) : null,
       }
       const userGroups = await this.spService.getUserGroups();
       const getFiles: IMemberOnBoardingFile[] = await sp.web.lists

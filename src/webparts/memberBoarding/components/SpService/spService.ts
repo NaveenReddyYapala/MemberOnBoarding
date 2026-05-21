@@ -62,7 +62,11 @@ const items = await web.lists.getByTitle("Member Master")
 
   // Get dropdown options from StateList
   public async GetStateOptions(): Promise<IDropdownOption[]> {
-    const items = await sp.web.lists.getByTitle("MOBStates").items.select("Id, Title").get();
+    const web = Web("https://wisdombat.transunion.com/sites/apps");
+
+const items = await web.lists.getByTitle("GST Master")
+    //const items = await sp.web.lists.getByTitle("MOBStates")
+    .items.select("Id, Title").get();
     return items.map((item: { Id: number; Title: string }) => ({
       key: item.Id,
       text: item.Title
@@ -95,7 +99,8 @@ const items = await web.lists.getByTitle("Member Master")
       "NewBusinessAddressState/Id", "NewBusinessAddressState/Title",
       "NewDataState/Id", "NewDataState/Title",
       "NewNominatedNodalState/Id", "NewNominatedNodalState/Title",
-      "NewRegisteredOfficeState/Id", "NewRegisteredOfficeState/Title"
+      "NewRegisteredOfficeState/Id", "NewRegisteredOfficeState/Title",
+      "CheckerAction", "CheckerComment", "CheckerEndDate", "CheckerStartDate", "FinanceAction", "FinanceComment", "FinanceEndDate", "FinanceStartDate", "FTPEndDate", "FTPStartDate", "FTPSupportAction", "FTPSupportComment", "IDEndDate", "IDStartDate", "IDSupportAction", "IDSupportComment", "LegalAction", "LegalComment", "LegalEndDate", "LegalStartDate", "MOBClouserAction", "MOBClouserComment", "MOBClouserEndDate", "MOBClouserStartDate"
     )
     .expand(
       "Author",
