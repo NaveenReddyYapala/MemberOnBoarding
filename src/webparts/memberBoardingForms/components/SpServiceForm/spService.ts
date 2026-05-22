@@ -30,10 +30,10 @@ export default class spservices {
     return groups.map(g => g.Title);
   }
  public async GetStateOptions(): Promise<IDropdownOption[]> {
-    const items = await sp.web.lists.getByTitle("MOBStates").items.select("Id, Title").get();
-    return items.map((item: { Id: number; Title: string }) => ({
+    const items = await sp.web.lists.getByTitle("MOBStates").items.select("Id, Title, GSTBillingCode").get();
+    return items.map((item: { Id: number; Title: string; GSTBillingCode: string }) => ({
       key: item.Id,
-      text: item.Title
+      text: item.GSTBillingCode
     }));
   }
   public async GetKomGroupOptions(): Promise<IDropdownOption[]> {

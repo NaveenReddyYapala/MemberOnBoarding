@@ -62,14 +62,14 @@ const items = await web.lists.getByTitle("Member Master")
 
   // Get dropdown options from StateList
   public async GetStateOptions(): Promise<IDropdownOption[]> {
-    const web = Web("https://wisdombat.transunion.com/sites/apps");
+//     const web = Web("https://wisdombat.transunion.com/sites/apps");
 
-const items = await web.lists.getByTitle("GST Master")
-    //const items = await sp.web.lists.getByTitle("MOBStates")
-    .items.select("Id, Title").get();
-    return items.map((item: { Id: number; Title: string }) => ({
+// const items = await web.lists.getByTitle("GST Master")
+    const items = await sp.web.lists.getByTitle("MOBStates")
+    .items.select("Id, Title, GSTBillingCode").get();
+    return items.map((item: { Id: number; Title: string; GSTBillingCode: string }) => ({
       key: item.Id,
-      text: item.Title
+      text: item.GSTBillingCode
     }));
   }
 
