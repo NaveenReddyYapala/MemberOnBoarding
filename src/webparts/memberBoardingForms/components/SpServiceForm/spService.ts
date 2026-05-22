@@ -30,7 +30,11 @@ export default class spservices {
     return groups.map(g => g.Title);
   }
  public async GetStateOptions(): Promise<IDropdownOption[]> {
-    const items = await sp.web.lists.getByTitle("MOBStates").items.select("Id, Title, GSTBillingCode").get();
+   const web = Web("https://wisdombat.transunion.com/sites/apps");
+
+const items = await web.lists.getByTitle("GST Master")
+    //const items = await sp.web.lists.getByTitle("MOBStates")
+    .items.select("Id, Title, GSTBillingCode").get();
     return items.map((item: { Id: number; Title: string; GSTBillingCode: string }) => ({
       key: item.Id,
       text: item.GSTBillingCode
