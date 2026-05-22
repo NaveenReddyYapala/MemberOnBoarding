@@ -48,9 +48,11 @@ export default class MemberBoardingDashBoard extends React.Component<IMemberBoar
   }
   private onEditClick(item: IBoardingItem): void {
     if (item.Status === "Draft" || item.Status === "Assigned to Maker") {
-      window.location.href = `/sites/NaveenReddy/SitePages/MemberOnBoardingNewForm.aspx?ItemId=${item.Id}`;
+    //  window.location.href = `/sites/NaveenReddy/SitePages/MemberOnBoardingNewForm.aspx?ItemId=${item.Id}`;
+    window.location.href = `/sites/apps/MembershipBoarding/SitePages/MemberOnBoardingNewForm.aspx?ItemId=${item.Id}`;
     } else {
-      window.location.href = `/sites/NaveenReddy/SitePages/MemberBoardingForm.aspx?ItemId=${item.Id}`;
+    //  window.location.href = `/sites/NaveenReddy/SitePages/MemberBoardingForm.aspx?ItemId=${item.Id}`;
+    window.location.href = `/sites/apps/MembershipBoarding/SitePages/MemberBoardingForm.aspx?ItemId=${item.Id}`;
     }
   }
 
